@@ -8,8 +8,8 @@
 
 
 from __future__ import print_function
-import commands
 import os
+import subprocess
 import sys
 
 
@@ -38,7 +38,7 @@ def SanitizeFilesWithModifiers(directory, file_modifiers, line_modifiers):
       # Only sanitize files with extensions we care about.
       if (len(full_item_path.split('.')) > 1 and
           full_item_path.split('.')[-1] in _FILE_EXTENSIONS_TO_SANITIZE):
-        f = file(full_item_path)
+        f = open(full_item_path)
         try:
           lines = f.readlines()
         finally:
@@ -69,7 +69,7 @@ def SanitizeFilesWithModifiers(directory, file_modifiers, line_modifiers):
 
         # Write modifications to the file.
         if write_to_file:
-          f = file(full_item_path, 'w')
+          f = open(full_item_path, 'w')
           try:
             f.write(new_content)
           finally:
@@ -127,7 +127,7 @@ def EOFOneAndOnlyOneNewlineAdder(file_content, file_path):
 
 def SvnEOLChecker(file_content, file_path):
   """Sets svn:eol-style property to LF."""
-  output = commands.getoutput(
+  output = subprocess.getoutput(
       'svn propget svn:eol-style %s' % file_path)
   if output != 'LF':
     print('Setting svn:eol-style property to LF in %s' % file_path)
