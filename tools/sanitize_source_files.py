@@ -38,7 +38,7 @@ def SanitizeFilesWithModifiers(directory, file_modifiers, line_modifiers):
       # Only sanitize files with extensions we care about.
       if (len(full_item_path.split('.')) > 1 and
           full_item_path.split('.')[-1] in _FILE_EXTENSIONS_TO_SANITIZE):
-        f = open(full_item_path)
+        f = open(full_item_path, 'r', encoding='utf-8', errors='surrogateescape')
         try:
           lines = f.readlines()
         finally:
@@ -69,7 +69,7 @@ def SanitizeFilesWithModifiers(directory, file_modifiers, line_modifiers):
 
         # Write modifications to the file.
         if write_to_file:
-          f = open(full_item_path, 'w')
+          f = open(full_item_path, 'w', encoding='utf-8', errors='surrogateescape')
           try:
             f.write(new_content)
           finally:
